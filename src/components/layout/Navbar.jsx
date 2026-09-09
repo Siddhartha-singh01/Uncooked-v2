@@ -166,7 +166,6 @@ export default function Navbar({ forceDarkTop = false }) {
     { label: "Opportunities", href: "/opportunities" },
     { label: "Host an Event", href: "/host" },
     { label: "About", href: "/about" },
-    { label: "Help", href: "/help" },
     { label: "Contact", href: "/contact" },
   ];
 
