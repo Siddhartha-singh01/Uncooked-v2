@@ -18,6 +18,9 @@ import {
   Settings,
   ChevronDown,
   LayoutDashboard,
+  CalendarPlus,
+  ShieldCheck,
+  Monitor,
 } from "lucide-react";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import NotificationBell from "@/components/layout/NotificationBell";
@@ -39,6 +42,7 @@ export default function Navbar({ forceDarkTop = false }) {
   const [visible, setVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [settingsSubmenuOpen, setSettingsSubmenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { theme, toggleTheme } = useTheme();
 
@@ -356,36 +360,93 @@ export default function Navbar({ forceDarkTop = false }) {
                         </div>
                       </div>
 
-                      {/* 3 Action Buttons: View Profile, Settings, Logout */}
+                      {/* Consolidated Actions: Console, Profile, Settings, Host, Logout */}
                       <div className="pt-2 border-t border-white/10 space-y-1">
-                        {/* 1. View Profile */}
+                        {/* 1. Student Console */}
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <LayoutDashboard className="w-4 h-4 text-[var(--accent-orange)]" />
+                          <span>Student Console</span>
+                        </Link>
+
+                        {/* 2. View Profile */}
                         <Link
                           href="/profile"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-white/85 hover:text-white hover:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
                         >
-                          <User className="w-4 h-4 text-[var(--accent-orange)]" />
+                          <User className="w-4 h-4 text-purple-400" />
                           <span>View Profile</span>
                         </Link>
 
-                        {/* 2. Settings */}
+                        {/* 3. Settings with Dropdown Options */}
+                        <div className="rounded-xl overflow-hidden bg-white/[0.03] border border-white/5">
+                          <button
+                            type="button"
+                            onClick={() => setSettingsSubmenuOpen(!settingsSubmenuOpen)}
+                            className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                          >
+                            <div className="flex items-center gap-3">
+                              <Settings className="w-4 h-4 text-cyan-400" />
+                              <span>Settings</span>
+                            </div>
+                            <ChevronDown
+                              className={`w-3.5 h-3.5 text-white/50 transition-transform ${
+                                settingsSubmenuOpen ? "rotate-180 text-white" : ""
+                              }`}
+                            />
+                          </button>
+                          {settingsSubmenuOpen && (
+                            <div className="px-2 pb-2 pt-1 space-y-1 border-t border-white/5">
+                              <Link
+                                href="/settings"
+                                onClick={() => setUserDropdownOpen(false)}
+                                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11px] text-white/75 hover:text-white hover:bg-white/10 transition-colors"
+                              >
+                                <Settings className="w-3 h-3 text-white/50" />
+                                <span>General Settings</span>
+                              </Link>
+                              <Link
+                                href="/settings#devices"
+                                onClick={() => setUserDropdownOpen(false)}
+                                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11px] text-white/75 hover:text-white hover:bg-white/10 transition-colors"
+                              >
+                                <Monitor className="w-3 h-3 text-emerald-400" />
+                                <span>Manage Desktops & Sessions</span>
+                              </Link>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 4. Host Tools */}
                         <Link
-                          href="/settings"
+                          href="/create"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-white/85 hover:text-white hover:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
                         >
-                          <Settings className="w-4 h-4 text-white/60" />
-                          <span>Settings</span>
+                          <CalendarPlus className="w-4 h-4 text-amber-400" />
+                          <span>Create Event</span>
+                        </Link>
+                        <Link
+                          href="/host/apply"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                          <span>Host Application</span>
                         </Link>
 
-                        {/* 3. Logout */}
+                        {/* 5. Logout */}
                         <button
                           type="button"
                           onClick={() => {
                             setUserDropdownOpen(false);
                             handleLogout();
                           }}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors cursor-pointer text-left"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors cursor-pointer text-left"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Sign Out</span>
@@ -396,6 +457,8 @@ export default function Navbar({ forceDarkTop = false }) {
                 </AnimatePresence>
               </div>
             </div>
+          ) : status === "loading" ? (
+            <div className="w-24 h-9 rounded-full bg-white/5 animate-pulse" />
           ) : (
             <>
               <Link
