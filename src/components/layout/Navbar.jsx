@@ -196,17 +196,13 @@ export default function Navbar({ forceDarkTop = false }) {
           >
             <Sparkles className="w-5 h-5 text-[var(--accent-orange)]" />
             <span
-              className="text-lg font-bold tracking-tight"
+              className="text-lg font-bold tracking-tight text-[var(--text-primary)]"
               style={{ color: "var(--text-primary)" }}
             >
               OPPORTIA
             </span>
             <span
-              className="text-[10px] font-medium px-1.5 py-0.5 rounded-full"
-              style={{
-                background: "var(--border-subtle)",
-                color: "var(--text-secondary)",
-              }}
+              className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[var(--border-subtle)] text-[var(--text-secondary)] border border-[var(--border-subtle)]"
             >
               β
             </span>
@@ -224,8 +220,8 @@ export default function Navbar({ forceDarkTop = false }) {
                 href={link.href}
                 className={`px-2.5 lg:px-3.5 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-xl transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ${
                   isActive
-                    ? "bg-white/10 text-white shadow-sm font-semibold"
-                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-white/5"
+                    ? "bg-[var(--accent-orange)]/10 text-[var(--text-primary)] border border-[var(--accent-orange)]/30 shadow-sm font-semibold"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border-subtle)]"
                 }`}
               >
                 {isDashboard && (
@@ -241,11 +237,14 @@ export default function Navbar({ forceDarkTop = false }) {
         <div className="hidden md:flex items-center gap-3 z-10">
           <button 
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-border-subtle transition-colors border border-border-subtle flex items-center justify-center cursor-pointer"
-            style={{ color: "var(--text-primary)" }}
+            className="p-2 rounded-full hover:bg-[var(--border-subtle)] transition-colors border border-[var(--border-subtle)] flex items-center justify-center cursor-pointer text-[var(--text-primary)]"
             aria-label="Toggle Theme"
           >
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === "dark" ? (
+              <Sun className="w-4 h-4 text-amber-400" />
+            ) : (
+              <Moon className="w-4 h-4 text-zinc-800" />
+            )}
           </button>
 
           {isLoggedIn ? (
@@ -257,11 +256,11 @@ export default function Navbar({ forceDarkTop = false }) {
                 <button
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1 pl-1.5 pr-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all active:scale-95 cursor-pointer group"
+                  className="flex items-center gap-2 p-1 pl-1.5 pr-2.5 rounded-full bg-[var(--border-subtle)] hover:bg-[var(--border-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] transition-all active:scale-95 cursor-pointer group"
                   aria-expanded={userDropdownOpen}
                   aria-label="User profile menu"
                 >
-                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 shadow-sm group-hover:border-[var(--accent-orange)] transition-colors">
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[var(--border-subtle)] shadow-sm group-hover:border-[var(--accent-orange)] transition-colors">
                     <Image
                       src={activeAvatar.src}
                       alt={activeAvatar.name}
@@ -270,12 +269,12 @@ export default function Navbar({ forceDarkTop = false }) {
                       sizes="32px"
                     />
                   </div>
-                  <span className="text-xs font-semibold text-white/90 max-w-[110px] truncate hidden sm:inline-block">
+                  <span className="text-xs font-semibold text-[var(--text-primary)] max-w-[110px] truncate hidden sm:inline-block">
                     {displayName}
                   </span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-white/50 transition-transform duration-200 ${
-                      userDropdownOpen ? "rotate-180 text-white" : ""
+                    className={`w-3.5 h-3.5 text-[var(--text-secondary)] transition-transform duration-200 ${
+                      userDropdownOpen ? "rotate-180 text-[var(--text-primary)]" : ""
                     }`}
                   />
                 </button>
@@ -288,14 +287,14 @@ export default function Navbar({ forceDarkTop = false }) {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.16, ease: "easeOut" }}
-                      className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-[#140f1a] border border-white/15 shadow-2xl backdrop-blur-2xl p-4 z-50 text-white space-y-4"
+                      className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-2xl backdrop-blur-2xl p-4 z-50 text-[var(--text-primary)] space-y-4"
                       style={{
-                        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08)",
+                        boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--border-subtle)",
                       }}
                     >
                       {/* User Header: Avatar, Name & Gmail */}
-                      <div className="flex items-center gap-3 pb-3 border-b border-white/10">
-                        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 shrink-0 shadow-md">
+                      <div className="flex items-center gap-3 pb-3 border-b border-[var(--border-subtle)]">
+                        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[var(--border-subtle)] shrink-0 shadow-md">
                           <Image
                             src={activeAvatar.src}
                             alt={activeAvatar.name}
@@ -305,11 +304,11 @@ export default function Navbar({ forceDarkTop = false }) {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <div className="text-sm font-bold text-white truncate">
+                          <div className="text-sm font-bold text-[var(--text-primary)] truncate">
                             {displayName}
                           </div>
                           {userEmail && (
-                            <div className="text-xs text-white/50 truncate font-mono mt-0.5">
+                            <div className="text-xs text-[var(--text-secondary)] truncate font-mono mt-0.5">
                               {userEmail}
                             </div>
                           )}
@@ -319,10 +318,10 @@ export default function Navbar({ forceDarkTop = false }) {
                       {/* 6 Curated Switcher Avatars */}
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] uppercase font-bold tracking-wider text-white/40">
+                          <span className="text-[10px] uppercase font-bold tracking-wider text-[var(--text-muted)]">
                             Choose Avatar
                           </span>
-                          <span className="text-[10px] text-amber-400 font-medium">
+                          <span className="text-[10px] text-amber-500 font-semibold">
                             {activeAvatar.name}
                           </span>
                         </div>
@@ -337,7 +336,7 @@ export default function Navbar({ forceDarkTop = false }) {
                                 className={`relative aspect-square rounded-full overflow-hidden transition-all duration-200 cursor-pointer p-0.5 ${
                                   isSelected
                                     ? "ring-2 ring-orange-500 scale-110 shadow-lg"
-                                    : "opacity-60 hover:opacity-100 hover:scale-105"
+                                    : "opacity-70 hover:opacity-100 hover:scale-105"
                                 }`}
                                 title={avatar.name}
                               >
@@ -357,12 +356,12 @@ export default function Navbar({ forceDarkTop = false }) {
                       </div>
 
                       {/* Consolidated Actions: Console, Profile, Settings, Host, Logout */}
-                      <div className="pt-2 border-t border-white/10 space-y-1">
+                      <div className="pt-2 border-t border-[var(--border-subtle)] space-y-1">
                         {/* 1. Student Console */}
                         <Link
                           href="/dashboard"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                         >
                           <LayoutDashboard className="w-4 h-4 text-[var(--accent-orange)]" />
                           <span>Student Console</span>
@@ -372,45 +371,45 @@ export default function Navbar({ forceDarkTop = false }) {
                         <Link
                           href="/profile"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                         >
-                          <User className="w-4 h-4 text-purple-400" />
+                          <User className="w-4 h-4 text-purple-500" />
                           <span>View Profile</span>
                         </Link>
 
                         {/* 3. Settings with Dropdown Options */}
-                        <div className="rounded-xl overflow-hidden bg-white/[0.03] border border-white/5">
+                        <div className="rounded-xl overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border-subtle)]">
                           <button
                             type="button"
                             onClick={() => setSettingsSubmenuOpen(!settingsSubmenuOpen)}
-                            className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                            className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors cursor-pointer"
                           >
                             <div className="flex items-center gap-3">
-                              <Settings className="w-4 h-4 text-cyan-400" />
+                              <Settings className="w-4 h-4 text-cyan-500" />
                               <span>Settings</span>
                             </div>
                             <ChevronDown
-                              className={`w-3.5 h-3.5 text-white/50 transition-transform ${
-                                settingsSubmenuOpen ? "rotate-180 text-white" : ""
+                              className={`w-3.5 h-3.5 text-[var(--text-secondary)] transition-transform ${
+                                settingsSubmenuOpen ? "rotate-180 text-[var(--text-primary)]" : ""
                               }`}
                             />
                           </button>
                           {settingsSubmenuOpen && (
-                            <div className="px-2 pb-2 pt-1 space-y-1 border-t border-white/5">
+                            <div className="px-2 pb-2 pt-1 space-y-1 border-t border-[var(--border-subtle)]">
                               <Link
                                 href="/settings"
                                 onClick={() => setUserDropdownOpen(false)}
-                                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11px] text-white/75 hover:text-white hover:bg-white/10 transition-colors"
+                                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                               >
-                                <Settings className="w-3 h-3 text-white/50" />
+                                <Settings className="w-3 h-3 text-[var(--text-muted)]" />
                                 <span>General Settings</span>
                               </Link>
                               <Link
                                 href="/settings#devices"
                                 onClick={() => setUserDropdownOpen(false)}
-                                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11px] text-white/75 hover:text-white hover:bg-white/10 transition-colors"
+                                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                               >
-                                <Monitor className="w-3 h-3 text-emerald-400" />
+                                <Monitor className="w-3 h-3 text-emerald-500" />
                                 <span>Manage Desktops & Sessions</span>
                               </Link>
                             </div>
@@ -421,17 +420,17 @@ export default function Navbar({ forceDarkTop = false }) {
                         <Link
                           href="/create"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                         >
-                          <CalendarPlus className="w-4 h-4 text-amber-400" />
+                          <CalendarPlus className="w-4 h-4 text-amber-500" />
                           <span>Create Event</span>
                         </Link>
                         <Link
                           href="/host/apply"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                         >
-                          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                          <ShieldCheck className="w-4 h-4 text-emerald-500" />
                           <span>Host Application</span>
                         </Link>
 
@@ -442,7 +441,7 @@ export default function Navbar({ forceDarkTop = false }) {
                             setUserDropdownOpen(false);
                             handleLogout();
                           }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors cursor-pointer text-left"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors cursor-pointer text-left"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Sign Out</span>
@@ -454,19 +453,12 @@ export default function Navbar({ forceDarkTop = false }) {
               </div>
             </div>
           ) : status === "loading" ? (
-            <div className="w-24 h-9 rounded-full bg-white/5 animate-pulse" />
+            <div className="w-24 h-9 rounded-full bg-[var(--border-subtle)] animate-pulse" />
           ) : (
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
-                style={{ color: "var(--text-secondary)" }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = "var(--text-primary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = "var(--text-secondary)";
-                }}
+                className="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               >
                 Login
               </Link>
@@ -482,16 +474,14 @@ export default function Navbar({ forceDarkTop = false }) {
           {isLoggedIn && <NotificationBell />}
           <button 
             onClick={toggleTheme}
-            className="p-2 min-w-[38px] min-h-[38px] rounded-full hover:bg-white/10 transition-colors border border-border-subtle flex items-center justify-center cursor-pointer"
-            style={{ color: "var(--text-primary)" }}
+            className="p-2 min-w-[38px] min-h-[38px] rounded-full hover:bg-[var(--border-subtle)] transition-colors border border-[var(--border-subtle)] flex items-center justify-center cursor-pointer text-[var(--text-primary)]"
             aria-label="Toggle Theme"
           >
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-zinc-800" />}
           </button>
           <button
             onClick={toggleMobileMenu}
-            className="p-2 min-w-[40px] min-h-[40px] rounded-xl hover:bg-white/10 flex items-center justify-center cursor-pointer"
-            style={{ color: "var(--text-primary)" }}
+            className="p-2 min-w-[40px] min-h-[40px] rounded-xl hover:bg-[var(--border-subtle)] border border-[var(--border-subtle)] flex items-center justify-center cursor-pointer text-[var(--text-primary)]"
             id="mobile-menu-toggle"
             aria-label="Toggle menu"
           >
@@ -508,8 +498,7 @@ export default function Navbar({ forceDarkTop = false }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 md:hidden overflow-y-auto"
-            style={{ background: "rgba(0,0,0,0.9)", backdropFilter: "blur(20px)" }}
+            className="fixed inset-0 z-50 md:hidden overflow-y-auto bg-[var(--bg-primary)]/95 backdrop-blur-2xl"
           >
             <div className="flex flex-col items-center justify-center min-h-full py-12 px-6 gap-6">
               {navLinks.map((link, i) => (
@@ -522,8 +511,7 @@ export default function Navbar({ forceDarkTop = false }) {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="text-2xl font-medium flex items-center gap-2.5"
-                    style={{ color: "var(--text-primary)" }}
+                    className="text-2xl font-medium flex items-center gap-2.5 text-[var(--text-primary)] hover:text-[var(--accent-orange)] transition-colors"
                   >
                     {link.label === "Dashboard" && (
                       <LayoutDashboard className="w-6 h-6 text-[var(--accent-orange)]" />
@@ -540,10 +528,10 @@ export default function Navbar({ forceDarkTop = false }) {
                 className="flex flex-col gap-4 mt-4 w-full max-w-xs"
               >
                 {isLoggedIn ? (
-                  <div className="bg-[#140f1a] border border-white/15 rounded-2xl p-4 text-white space-y-4 shadow-xl">
+                  <div className="bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-2xl p-4 text-[var(--text-primary)] space-y-4 shadow-xl">
                     {/* User Header */}
-                    <div className="flex items-center gap-3 pb-3 border-b border-white/10">
-                      <div className="relative w-11 h-11 rounded-full overflow-hidden border border-white/20 shrink-0">
+                    <div className="flex items-center gap-3 pb-3 border-b border-[var(--border-subtle)]">
+                      <div className="relative w-11 h-11 rounded-full overflow-hidden border border-[var(--border-subtle)] shrink-0">
                         <Image
                           src={activeAvatar.src}
                           alt={activeAvatar.name}
@@ -553,11 +541,11 @@ export default function Navbar({ forceDarkTop = false }) {
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-sm font-bold text-white truncate">
+                        <div className="text-sm font-bold text-[var(--text-primary)] truncate">
                           {displayName}
                         </div>
                         {userEmail && (
-                          <div className="text-xs text-white/50 truncate font-mono mt-0.5">
+                          <div className="text-xs text-[var(--text-secondary)] truncate font-mono mt-0.5">
                             {userEmail}
                           </div>
                         )}
@@ -566,9 +554,9 @@ export default function Navbar({ forceDarkTop = false }) {
 
                     {/* 6 Avatars */}
                     <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-[10px] text-white/40 uppercase font-bold">
+                      <div className="flex items-center justify-between text-[10px] text-[var(--text-muted)] uppercase font-bold">
                         <span>Choose Avatar</span>
-                        <span className="text-amber-400">{activeAvatar.name}</span>
+                        <span className="text-amber-500 font-semibold">{activeAvatar.name}</span>
                       </div>
                       <div className="grid grid-cols-6 gap-2">
                         {AVATAR_OPTIONS.map((avatar) => (
@@ -579,7 +567,7 @@ export default function Navbar({ forceDarkTop = false }) {
                             className={`relative aspect-square rounded-full overflow-hidden cursor-pointer ${
                               avatar.id === selectedAvatarId
                                 ? "ring-2 ring-orange-500 scale-105"
-                                : "opacity-60"
+                                : "opacity-70"
                             }`}
                           >
                             <Image
@@ -595,7 +583,7 @@ export default function Navbar({ forceDarkTop = false }) {
                     </div>
 
                     {/* 3 Action Buttons */}
-                    <div className="pt-2 border-t border-white/10 space-y-1.5">
+                    <div className="pt-2 border-t border-[var(--border-subtle)] space-y-1.5">
                       <Link
                         href="/profile"
                         onClick={() => setMobileOpen(false)}
@@ -619,7 +607,7 @@ export default function Navbar({ forceDarkTop = false }) {
                           setMobileOpen(false);
                           handleLogout();
                         }}
-                        className="btn-secondary text-red-400 border-red-500/20 w-full flex items-center justify-center gap-2 py-2.5 text-xs"
+                        className="btn-secondary text-red-500 border-red-500/30 w-full flex items-center justify-center gap-2 py-2.5 text-xs"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
