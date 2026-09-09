@@ -26,14 +26,6 @@ export default function Footer() {
   }, []);
 
   const footerLinks = {
-    product: [
-      { label: "Events", href: "/events" },
-      { label: "Opportunities", href: "/opportunities" },
-      { label: "Host an Event", href: "/host" },
-      { label: "Host application", href: "/host/apply" },
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-    ],
     legal: [
       { label: "Terms", href: "/terms" },
       { label: "Privacy", href: "/privacy" },
@@ -82,34 +74,16 @@ export default function Footer() {
     >
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="flex flex-wrap items-center justify-between gap-6">
-          {/* Logo & Links */}
-          <div className="flex items-center gap-6 flex-wrap">
-            <Link href="/" className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[var(--accent-orange)]" />
-              <span
-                className="text-xl font-bold tracking-tight"
-                style={{ color: "var(--text-primary)" }}
-              >
-                OPPORTIA
-              </span>
-            </Link>
-            {footerLinks.product.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-sm transition-colors duration-200"
-                style={{ color: "var(--text-muted)" }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = "var(--text-secondary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = "var(--text-muted)";
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-[var(--accent-orange)]" />
+            <span
+              className="text-xl font-bold tracking-tight"
+              style={{ color: "var(--text-primary)" }}
+            >
+              OPPORTIA
+            </span>
+          </Link>
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
