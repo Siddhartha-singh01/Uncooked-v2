@@ -358,8 +358,8 @@ export default function DashboardPage() {
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {liveEvents.map((ev) => {
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {liveEvents.slice(0, 3).map((ev) => {
                     const alreadyClaimed = isEventRegistered(ev.id);
                     return (
                       <div
