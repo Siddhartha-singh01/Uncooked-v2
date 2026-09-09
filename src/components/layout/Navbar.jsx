@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "@/components/providers/SupabaseProvider";
 import { createClient } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
@@ -36,6 +36,7 @@ export const AVATAR_OPTIONS = [
 
 export default function Navbar({ forceDarkTop = false }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session, status } = useSession();
   const supabase = createClient();
   const [scrolled, setScrolled] = useState(false);
@@ -167,6 +168,7 @@ export default function Navbar({ forceDarkTop = false }) {
 
   const navLinks = [
     { label: "Events", href: "/events" },
+    ...(isLoggedIn ? [{ label: "Dashboard", href: "/dashboard" }] : []),
     { label: "Opportunities", href: "/opportunities" },
     { label: "Host an Event", href: "/host" },
     { label: "About", href: "/about" },
@@ -211,26 +213,28 @@ export default function Navbar({ forceDarkTop = false }) {
           </motion.div>
         </Link>
 
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
-              style={{ color: "var(--text-secondary)" }}
-              onMouseEnter={(e) => {
-                e.target.style.color = "var(--text-primary)";
-                e.target.style.background = "rgba(255,255,255,0.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = "var(--text-secondary)";
-                e.target.style.background = "transparent";
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Desktop Nav Links (Centered in page) */}
+        <div className="hidden md:flex items-center gap-0.5 lg:gap-1 absolute left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            const isDashboard = link.label === "Dashboard";
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`px-2.5 lg:px-3.5 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-xl transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ${
+                  isActive
+                    ? "bg-white/10 text-white shadow-sm font-semibold"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-white/5"
+                }`}
+              >
+                {isDashboard && (
+                  <LayoutDashboard className="w-3.5 h-3.5 text-[var(--accent-orange)] shrink-0" />
+                )}
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Right Side - Auth & Profile Section */}
@@ -247,14 +251,6 @@ export default function Navbar({ forceDarkTop = false }) {
           {isLoggedIn ? (
             <div className="flex items-center gap-2.5">
               <NotificationBell />
-              {/* Quick Dashboard Link */}
-              <Link
-                href="/dashboard"
-                className="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-white/5 border border-white/10 text-white/90 flex items-center gap-2 hover:border-[var(--accent-orange)] transition-colors"
-              >
-                <LayoutDashboard className="w-3.5 h-3.5 text-[var(--accent-orange)]" />
-                <span>Dashboard</span>
-              </Link>
 
               {/* Profile Avatar Trigger & Dropdown Menu */}
               <div className="relative" ref={dropdownRef}>
@@ -526,10 +522,13 @@ export default function Navbar({ forceDarkTop = false }) {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="text-2xl font-medium"
+                    className="text-2xl font-medium flex items-center gap-2.5"
                     style={{ color: "var(--text-primary)" }}
                   >
-                    {link.label}
+                    {link.label === "Dashboard" && (
+                      <LayoutDashboard className="w-6 h-6 text-[var(--accent-orange)]" />
+                    )}
+                    <span>{link.label}</span>
                   </Link>
                 </motion.div>
               ))}
