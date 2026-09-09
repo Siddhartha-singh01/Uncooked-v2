@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useSession } from "@/components/providers/SupabaseProvider";
 import { motion } from "framer-motion";
 import { Sparkles, Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
@@ -14,6 +15,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = safeInternalPath(searchParams.get("redirectTo"), "/dashboard");
+  const { refreshSession } = useSession();
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -56,6 +58,8 @@ function LoginForm() {
         return;
       }
 
+      // Server set cookies — refresh client session so Navbar hides Login/Get Started.
+      await refreshSession?.();
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
