@@ -87,34 +87,37 @@ export async function createInAppNotificationForEmails({
 
 export async function listNotificationsForUser(userId, { limit = 20, cursor } = {}) {
   const take = Math.min(Math.max(Number(limit) || 20, 1), 50);
-  const rows = await prisma.notificationRecipient.findMany({
-    where: {
-      userId,
-      user: { deletedAt: null },
-      ...(cursor ? { createdAt: { lt: new Date(cursor) } } : {}),
-    },
-    orderBy: { createdAt: "desc" },
-    take,
-    select: {
-      id: true,
-      readAt: true,
-      createdAt: true,
-      notification: {
-        select: {
-          id: true,
-          title: true,
-          body: true,
-          mediaUrl: true,
-          kind: true,
-          createdAt: true,
+  const where = {
+    userId,
+    user: { deletedAt: null },
+    ...(cursor ? { createdAt: { lt: new Date(cursor) } } : {}),
+  };
+
+  const [rows, unreadCount] = await Promise.all([
+    prisma.notificationRecipient.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      take,
+      select: {
+        id: true,
+        readAt: true,
+        createdAt: true,
+        notification: {
+          select: {
+            id: true,
+            title: true,
+            body: true,
+            mediaUrl: true,
+            kind: true,
+            createdAt: true,
+          },
         },
       },
-    },
-  });
-
-  const unreadCount = await prisma.notificationRecipient.count({
-    where: { userId, readAt: null, user: { deletedAt: null } },
-  });
+    }),
+    prisma.notificationRecipient.count({
+      where: { userId, readAt: null, user: { deletedAt: null } },
+    }),
+  ]);
 
   return {
     unreadCount,

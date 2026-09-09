@@ -65,16 +65,8 @@ export default function NotificationBell() {
         body: JSON.stringify(all ? { all: true } : { ids }),
       });
       if (!res.ok) return;
-      if (all) {
-        setItems((prev) => prev.map((n) => ({ ...n, readAt: n.readAt || new Date().toISOString() })));
-        setUnreadCount(0);
-      } else {
-        const idSet = new Set(ids || []);
-        setItems((prev) =>
-          prev.map((n) => (idSet.has(n.id) ? { ...n, readAt: n.readAt || new Date().toISOString() } : n))
-        );
-        setUnreadCount((c) => Math.max(0, c - idSet.size));
-      }
+      // Refetch to keep unreadCount accurate (avoids double-count bugs on re-click).
+      await fetchInbox();
     } catch {
       /* ignore */
     }
